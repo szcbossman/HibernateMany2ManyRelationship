@@ -1,16 +1,13 @@
 package com.troyszc.firstHibernate;
 
-import com.troyszc.firstHibernate.entity.Course;
-import com.troyszc.firstHibernate.entity.Instructor;
-import com.troyszc.firstHibernate.entity.InstructorDetail;
-import com.troyszc.firstHibernate.entity.Review;
+import com.troyszc.firstHibernate.entity.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class CreateCourseAndReviews {
+public class CreateCourseAndStudents {
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
 
         //create session factory
         SessionFactory factory = new Configuration()
@@ -19,6 +16,7 @@ public class CreateCourseAndReviews {
                 .addAnnotatedClass(InstructorDetail.class)
                 .addAnnotatedClass(Course.class)
                 .addAnnotatedClass(Review.class)
+                .addAnnotatedClass(Student.class)
                 .buildSessionFactory();
         //create session
         Session session = factory.getCurrentSession();
@@ -30,29 +28,33 @@ public class CreateCourseAndReviews {
 
             //create course and reviews
             Course theCourse = new Course("How to stick shift 101");
-            Review theReview1 = new Review("driving a  ND Miata is just awesome bro.");
-            Review theReview2 = new Review("only way to prevent auto theft in US.");
-            Review theReview3 = new Review("this course kinda sucks, go back to my 7 speed CVT.");
-
-            //add reviews
-            theCourse.addReview(theReview1);
-            theCourse.addReview(theReview2);
-            theCourse.addReview(theReview3);
 
             //save course
             session.save(theCourse);
             System.out.println("the course: " + theCourse);
-            System.out.println("and it's reviews: " + theCourse.getReviews() + "\n");
+
+            //create students
+            Student theStudent1 = new Student("troy", "song", "troysong33@gmail.com");
+            Student theStudent2 = new Student("trey", "songz", "treysongz@gmail.com");
+
+            //add students
+            theCourse.addStudent(theStudent1);
+            theCourse.addStudent(theStudent2);
+
+            //save students
+            session.save(theStudent1);
+            session.save(theStudent2);
+            System.out.println("the students: " + theCourse.getStudents());
+
             //commit transaction
             session.getTransaction().commit();
             System.out.println("Done: data saved to db.");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             session.close();
             factory.close();
         }
+
     }
 }
