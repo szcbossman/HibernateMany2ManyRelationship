@@ -26,6 +26,7 @@ public class CreateCourseAndStudents {
             //start transaction
             session.beginTransaction();
 
+            /*
             //create course and reviews
             Course theCourse = new Course("How to stick shift 101");
 
@@ -45,6 +46,18 @@ public class CreateCourseAndStudents {
             session.save(theStudent1);
             session.save(theStudent2);
             System.out.println("the students: " + theCourse.getStudents());
+            */
+
+            //more work to test out join table
+            int studentId = 1;
+
+            Student theStudentWhoLikesToLearnMore = session.get(Student.class, studentId);
+            Course theCourse1 = new Course("how to heel and toe 102");
+            Course theCourse2 = new Course("how to left foot braking");
+            theCourse1.addStudent(theStudentWhoLikesToLearnMore);
+            theCourse2.addStudent(theStudentWhoLikesToLearnMore);
+            session.save(theCourse1);
+            session.save(theCourse2);
 
             //commit transaction
             session.getTransaction().commit();
